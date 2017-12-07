@@ -1,5 +1,6 @@
 package fr.parisnanterre.idd.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BDD {
@@ -8,6 +9,14 @@ public class BDD {
     private List<Enseigne> enseignes;
     private List<Etudiant> etudiants;
     private List<Inscription> inscriptions;
+
+    public BDD() {
+        cours = new ArrayList<>();
+        enseignants = new ArrayList<>();
+        enseignes = new ArrayList<>();
+        etudiants = new ArrayList<>();
+        inscriptions = new ArrayList<>();
+    }
 
     public List<Cours> getCours() {
         return cours;
