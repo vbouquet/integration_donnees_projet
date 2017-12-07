@@ -2,35 +2,35 @@ package fr.parisnanterre.idd.model;
 
 public class Inscription {
 
-    private long fk_etudiant;
-    private long fk_cours;
+    private Etudiant etudiant;
+    private Cours cours;
     private String annee;
     private float note;
 
     public Inscription() {
     }
 
-    public Inscription(long fk_etudiant, long fk_cours, String annee, float note) {
-        this.fk_etudiant = fk_etudiant;
-        this.fk_cours = fk_cours;
+    public Inscription(Etudiant etudiant, Cours cours, String annee, float note) {
+        this.etudiant = etudiant;
+        this.cours = cours;
         this.annee = annee;
         this.note = note;
     }
 
-    public long getFk_etudiant() {
-        return fk_etudiant;
+    public Etudiant getEtudiant() {
+        return etudiant;
     }
 
-    public void setFk_etudiant(long fk_etudiant) {
-        this.fk_etudiant = fk_etudiant;
+    public void setEtudiant(Etudiant etudiant) {
+        this.etudiant = etudiant;
     }
 
-    public long getFk_cours() {
-        return fk_cours;
+    public Cours getCours() {
+        return cours;
     }
 
-    public void setFk_cours(long fk_cours) {
-        this.fk_cours = fk_cours;
+    public void setCours(Cours cours) {
+        this.cours = cours;
     }
 
     public String getAnnee() {
