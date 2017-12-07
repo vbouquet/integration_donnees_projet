@@ -99,4 +99,13 @@ public class Etudiant {
     public void setNiveauInsertion(String niveauInsertion) {
         this.niveauInsertion = niveauInsertion;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder().append("Etudiant {\n");
+        sb.append("prenom = ").append(prenom).append("\n");
+        sb.append("nom = ").append(nom).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
 }

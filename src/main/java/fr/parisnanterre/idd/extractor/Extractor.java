@@ -1,9 +1,11 @@
 package fr.parisnanterre.idd.extractor;
 
+import fr.parisnanterre.idd.model.BDD;
+
 public interface Extractor {
     boolean getSession();
     boolean closeSession();
-    String listStudentInSGBD();
-    String listProfessorCourses();
-    String countStudentInM1();
+    BDD listStudentInSGBD();
+    BDD listProfessorCourses();
+    BDD countStudentInM1();
 }
