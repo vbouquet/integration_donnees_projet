@@ -71,7 +71,7 @@ public class SQLExtractor implements Extractor {
     public BDD listStudentInSGBD () {
 
         ResultSet resultSet = getResult(
-                "SELECT DISTINCT E.NOM, E.PRENOM " +
+                "SELECT DISTINCT E.ID_ETUDIANT, E.NOM, E.PRENOM " +
                         "FROM ETUDIANT E, INSCRIPTION I, COURS C " +
                         "WHERE C.NUMCOURS = I.NUMCOURS " +
                         "AND E.ID_ETUDIANT = I.NUMET " +
@@ -84,7 +84,8 @@ public class SQLExtractor implements Extractor {
 
             while (resultSet.next()) {
                 Etudiant etudiant = new Etudiant();
-                etudiant.setNom(resultSet.getString("nom"));
+                etudiant.setId_etudiant(resultSet.getInt("ID_ETUDIANT"));
+                etudiant.setNom(resultSet.getString("NOM"));
                 etudiant.setPrenom(resultSet.getString("prenom"));
                 System.out.println(etudiant);
                 bdd.getEtudiants().add(etudiant);
