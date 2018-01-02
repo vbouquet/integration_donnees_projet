@@ -3,15 +3,11 @@ package fr.parisnanterre.idd.extractor.excel;
 import fr.parisnanterre.idd.extractor.Extractor;
 import fr.parisnanterre.idd.model.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -20,7 +16,7 @@ public class ExcelExtractor implements Extractor {
     private static String SOURCE = "src\\main\\resources\\donnees.xls";
     private HSSFWorkbook workbook;
     private FileInputStream excelFile;
-    private BDD dataset = null;
+    private static BDD dataset = null;
 
     @Override
     public boolean getSession() {
@@ -47,10 +43,17 @@ public class ExcelExtractor implements Extractor {
 
     @Override
     public BDD listStudentInSGBD() {
-        //TODO Lister les étudiants inscrits en SGBD
-        buildDataset();
-
-        return null;
+        BDD sgbdStudents = new BDD();
+        if (dataset == null) {
+            buildDataset();
+        }
+        for (Inscription inscription: dataset.getInscriptions()) {
+            if (inscription.getCours().getLibelle().equals("SGBD")) {
+                sgbdStudents.getEtudiants().add(inscription.getEtudiant());
+            }
+        }
+        System.out.println(sgbdStudents);
+        return sgbdStudents;
     }
 
     @Override
@@ -67,6 +70,8 @@ public class ExcelExtractor implements Extractor {
     private void buildDataset() {
         getSession();
         dataset = new BDD();
+
+        System.out.println("Building dataset...");
 
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             Sheet sheet = workbook.getSheetAt(i);
@@ -147,7 +152,6 @@ public class ExcelExtractor implements Extractor {
                 }
             }
         }
-        System.out.println(dataset);
         closeSession();
     }
 }
