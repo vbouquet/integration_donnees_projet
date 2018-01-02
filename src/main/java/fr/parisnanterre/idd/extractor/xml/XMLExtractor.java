@@ -2,6 +2,10 @@ package fr.parisnanterre.idd.extractor.xml;
 
 import fr.parisnanterre.idd.extractor.Extractor;
 import fr.parisnanterre.idd.model.BDD;
+import fr.parisnanterre.idd.model.Cours;
+import fr.parisnanterre.idd.model.Etudiant;
+
+import java.util.Set;
 
 public class XMLExtractor implements Extractor {
     @Override
@@ -17,19 +21,19 @@ public class XMLExtractor implements Extractor {
     }
 
     @Override
-    public BDD listStudentInSGBD () {
+    public Set<Etudiant> listStudentInSGBD () {
         //TODO Lister les étudiants inscrits en SGBD
         return null;
     }
 
     @Override
-    public BDD listProfessorCourses() {
+    public Set<Cours> listProfessorCourses() {
         return null;
     }
 
     @Override
-    public BDD countStudentInM1() {
+    public int countStudentInM1() {
         //TODO Count student in M1
-        return null;
+        return 0;
     }
 }

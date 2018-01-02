@@ -10,6 +10,6 @@ public class Main {
         extractor.listStudentInSGBD();*/
 
         Extractor extractor = new ExcelExtractor();
-        extractor.listStudentInSGBD();
+        extractor.countStudentInM1();
     }
 }

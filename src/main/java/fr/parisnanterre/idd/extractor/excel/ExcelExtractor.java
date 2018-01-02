@@ -9,7 +9,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class ExcelExtractor implements Extractor {
 
@@ -42,14 +44,14 @@ public class ExcelExtractor implements Extractor {
     }
 
     @Override
-    public BDD listStudentInSGBD() {
-        BDD sgbdStudents = new BDD();
+    public Set<Etudiant> listStudentInSGBD() {
+        Set<Etudiant> sgbdStudents = new LinkedHashSet<>();
         if (dataset == null) {
             buildDataset();
         }
         for (Inscription inscription: dataset.getInscriptions()) {
             if (inscription.getCours().getLibelle().equals("SGBD")) {
-                sgbdStudents.getEtudiants().add(inscription.getEtudiant());
+                sgbdStudents.add(inscription.getEtudiant());
             }
         }
         System.out.println(sgbdStudents);
@@ -57,14 +59,23 @@ public class ExcelExtractor implements Extractor {
     }
 
     @Override
-    public BDD listProfessorCourses() {
-        return null;
+    public Set<Cours> listProfessorCourses() {
+        if (dataset == null) {
+            buildDataset();
+        }
+        System.out.println(dataset.getCours());
+        return dataset.getCours();
     }
 
     @Override
-    public BDD countStudentInM1() {
-        //TODO Count student in M1
-        return null;
+    public int countStudentInM1() {
+        if (dataset == null) {
+            buildDataset();
+        }
+        System.out.println((int) dataset.getEtudiants().stream().filter(e -> e.getNiveauInsertion().equals("M1")).count());
+        return (int) dataset.getEtudiants().stream()
+                .filter(e -> e.getNiveauInsertion()
+                        .equals("M1")).count();
     }
 
     private void buildDataset() {
