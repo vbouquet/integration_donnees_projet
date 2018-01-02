@@ -28,6 +28,16 @@ public class Etudiant {
         this.niveauInsertion = niveauInsertion;
     }
 
+    public Etudiant(long id_etudiant, String nom, String prenom, String provenance, String formationPrecedente,
+                    String niveauInsertion) {
+        this.id_etudiant = id_etudiant;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.provenance = provenance;
+        this.formationPrecedente = formationPrecedente;
+        this.niveauInsertion = niveauInsertion;
+    }
+
     public long getId_etudiant() {
         return id_etudiant;
     }
@@ -107,5 +117,20 @@ public class Etudiant {
         sb.append("nom = ").append(nom).append("\n");
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Etudiant etudiant = (Etudiant) o;
+
+        return id_etudiant == etudiant.id_etudiant;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id_etudiant ^ (id_etudiant >>> 32));
     }
 }

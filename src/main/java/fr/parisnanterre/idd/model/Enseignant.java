@@ -17,6 +17,12 @@ public class Enseignant {
         this.mail = mail;
     }
 
+    public Enseignant(long id_enseignant, String nom, String prenom) {
+        this.id_enseignant = id_enseignant;
+        this.nom = nom;
+        this.prenom = prenom;
+    }
+
     public long getId_enseignant() {
         return id_enseignant;
     }
