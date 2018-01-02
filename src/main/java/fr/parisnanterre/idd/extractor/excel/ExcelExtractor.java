@@ -1,9 +1,7 @@
 package fr.parisnanterre.idd.extractor.excel;
 
 import fr.parisnanterre.idd.extractor.Extractor;
-import fr.parisnanterre.idd.model.BDD;
-import fr.parisnanterre.idd.model.Enseignant;
-import fr.parisnanterre.idd.model.Etudiant;
+import fr.parisnanterre.idd.model.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
@@ -76,7 +74,7 @@ public class ExcelExtractor implements Extractor {
 
                 if (row.getRowNum() != 0) {
 
-                    // ID etudiant
+                    /*// ID etudiant
                     System.out.println(row.getCell(0));
 
                     // Nom
@@ -112,25 +110,44 @@ public class ExcelExtractor implements Extractor {
                     // Note
                     System.out.println(row.getCell(11));
 
+                    // Get year (sheet name)
+                    System.out.println(sheet.getSheetName());*/
+
+                    Cours cours = new Cours((long) row.getCell(7).getNumericCellValue(),
+                            row.getCell(8).getStringCellValue(),
+                            row.getCell(9).getStringCellValue(),
+                            row.getCell(10).getStringCellValue());
+                    dataset.addCours(cours);
+
                     if (Objects.equals(row.getCell(3).getStringCellValue(), "etudiant")) {
 
-                        dataset.addEtudiant(new Etudiant((long) row.getCell(0).getNumericCellValue(),
+                        Etudiant etudiant = new Etudiant((long) row.getCell(0).getNumericCellValue(),
                                 row.getCell(1).getStringCellValue(),
                                 row.getCell(2).getStringCellValue(),
                                 row.getCell(4).getStringCellValue(),
                                 row.getCell(5).getStringCellValue(),
-                                row.getCell(6).getStringCellValue()));
+                                row.getCell(6).getStringCellValue());
+                        dataset.addEtudiant(etudiant);
+
+                        Inscription inscription = new Inscription(etudiant, cours, sheet.getSheetName(),
+                                (float) row.getCell(11).getNumericCellValue());
+
+                        dataset.addInscription(inscription);
 
                     } else if (Objects.equals(row.getCell(3).getStringCellValue(), "enseignant")) {
 
-                        dataset.addEnseignant(new Enseignant((long) row.getCell(0).getNumericCellValue(),
+                        Enseignant enseignant = new Enseignant((long) row.getCell(0).getNumericCellValue(),
                                 row.getCell(1).getStringCellValue(),
-                                row.getCell(2).getStringCellValue()));
+                                row.getCell(2).getStringCellValue());
+                        dataset.addEnseignant(enseignant);
 
+                        Enseigne enseigne = new Enseigne(enseignant, cours, sheet.getSheetName());
+                        dataset.addEnseigne(enseigne);
                     }
                 }
             }
         }
         System.out.println(dataset);
+        closeSession();
     }
 }

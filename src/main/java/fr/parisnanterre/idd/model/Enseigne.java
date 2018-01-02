@@ -17,6 +17,12 @@ public class Enseigne {
         this.heures = heures;
     }
 
+    public Enseigne(Enseignant enseignant, Cours cours, String annee) {
+        this.enseignant = enseignant;
+        this.cours = cours;
+        this.annee = annee;
+    }
+
     public Enseignant getEnseignant() {
         return enseignant;
     }
@@ -47,5 +53,16 @@ public class Enseigne {
 
     public void setHeures(int heures) {
         this.heures = heures;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Enseigne{");
+        sb.append("enseignant=").append(enseignant).append("\n");
+        sb.append("cours=").append(cours).append("\n");
+        sb.append("annee='").append(annee).append('\'').append("\n");
+        sb.append("heures=").append(heures).append("\n");
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -79,12 +79,22 @@ public class BDD {
 
     @Override
     public String toString() {
-        return "BDD{" +
-                "cours=" + cours +
-                ", enseignants=" + enseignants +
-                ", enseignes=" + enseignes +
-                ", etudiants=" + etudiants +
-                ", inscriptions=" + inscriptions +
-                '}';
+        final StringBuilder sb = new StringBuilder("BDD{");
+        sb.append("cours=").append(cours).append("\n");
+        sb.append("enseignants=").append(enseignants).append("\n");
+        sb.append("enseignes=").append(enseignes).append("\n");
+        sb.append("etudiants=").append(etudiants).append("\n");
+        sb.append("inscriptions=").append(inscriptions).append("\n");
+        sb.append('}');
+        return sb.toString();
     }
+
+    /*@Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BDD{");
+        sb.append("enseignes=").append(enseignes).append("\n");
+        sb.append("inscriptions=").append(inscriptions).append("\n");
+        sb.append('}');
+        return sb.toString();
+    }*/
 }
