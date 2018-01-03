@@ -77,6 +77,33 @@ public class BDD {
         this.inscriptions.add(inscription);
     }
 
+    public Etudiant getSpecificStudent(Long id) {
+        for (Etudiant etudiant : etudiants) {
+            if (etudiant.getId_etudiant() == id) {
+                return etudiant;
+            }
+        }
+        return null;
+    }
+
+    public Enseignant getSpecificTeacher(Long id) {
+        for (Enseignant enseignant : enseignants) {
+            if (enseignant.getId_enseignant() == id) {
+                return enseignant;
+            }
+        }
+        return null;
+    }
+
+    public Cours getSpecificCourse(Long id) {
+        for (Cours cours : cours) {
+            if (cours.getId_cours() == id) {
+                return cours;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BDD{");

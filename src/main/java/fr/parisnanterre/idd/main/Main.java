@@ -14,6 +14,6 @@ public class Main {
         extractor.countStudentInM1();*/
 
         Extractor extractor = new XMLExtractor();
-        extractor.listStudentInSGBD();
+        extractor.listProfessorCourses();
     }
 }

@@ -49,7 +49,7 @@ public class ExcelExtractor implements Extractor {
         if (dataset == null) {
             buildDataset();
         }
-        for (Inscription inscription: dataset.getInscriptions()) {
+        for (Inscription inscription : dataset.getInscriptions()) {
             if (inscription.getCours().getLibelle().equals("SGBD")) {
                 sgbdStudents.add(inscription.getEtudiant());
             }

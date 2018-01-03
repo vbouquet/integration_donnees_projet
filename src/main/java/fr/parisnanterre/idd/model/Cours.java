@@ -18,6 +18,13 @@ public class Cours {
         this.niveau = niveau;
     }
 
+    public Cours(long id_cours, String type, String niveau, int heures) {
+        this.id_cours = id_cours;
+        this.type = type;
+        this.niveau = niveau;
+        this.heures = heures;
+    }
+
     public long getId_cours() {
         return id_cours;
     }
