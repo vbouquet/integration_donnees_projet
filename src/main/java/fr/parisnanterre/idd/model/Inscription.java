@@ -48,4 +48,15 @@ public class Inscription {
     public void setNote(float note) {
         this.note = note;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Inscription{");
+        sb.append("etudiant=").append(etudiant).append("\n");
+        sb.append("cours=").append(cours).append("\n");
+        sb.append("annee='").append(annee).append('\'').append("\n");
+        sb.append("note=").append(note).append("\n");
+        sb.append('}');
+        return sb.toString();
+    }
 }

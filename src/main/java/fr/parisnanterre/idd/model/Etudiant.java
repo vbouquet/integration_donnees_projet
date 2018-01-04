@@ -28,6 +28,27 @@ public class Etudiant {
         this.niveauInsertion = niveauInsertion;
     }
 
+    public Etudiant(long id_etudiant, String nom, String prenom, String provenance, String formationPrecedente,
+                    String niveauInsertion) {
+        this.id_etudiant = id_etudiant;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.provenance = provenance;
+        this.formationPrecedente = formationPrecedente;
+        this.niveauInsertion = niveauInsertion;
+    }
+
+    public Etudiant(long id_etudiant, String nom, String provenance, String formationPrecedente,
+                    String paysFormationPrecedente, String anneeDebut, String niveauInsertion) {
+        this.id_etudiant = id_etudiant;
+        this.nom = nom;
+        this.provenance = provenance;
+        this.formationPrecedente = formationPrecedente;
+        this.paysFormationPrecedente = paysFormationPrecedente;
+        this.anneeDebut = anneeDebut;
+        this.niveauInsertion = niveauInsertion;
+    }
+
     public long getId_etudiant() {
         return id_etudiant;
     }
@@ -103,9 +124,25 @@ public class Etudiant {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder().append("Etudiant {\n");
+        sb.append("id = ").append(id_etudiant).append("\n");
         sb.append("prenom = ").append(prenom).append("\n");
         sb.append("nom = ").append(nom).append("\n");
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Etudiant etudiant = (Etudiant) o;
+
+        return id_etudiant == etudiant.id_etudiant;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id_etudiant ^ (id_etudiant >>> 32));
     }
 }

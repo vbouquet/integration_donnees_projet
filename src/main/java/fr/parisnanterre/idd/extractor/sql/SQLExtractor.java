@@ -3,10 +3,13 @@ package fr.parisnanterre.idd.extractor.sql;
 import com.sun.rowset.CachedRowSetImpl;
 import fr.parisnanterre.idd.extractor.Extractor;
 import fr.parisnanterre.idd.model.BDD;
+import fr.parisnanterre.idd.model.Cours;
 import fr.parisnanterre.idd.model.Etudiant;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class SQLExtractor implements Extractor {
     private Connection connection = null;
@@ -68,7 +71,7 @@ public class SQLExtractor implements Extractor {
     }
 
     @Override
-    public BDD listStudentInSGBD () {
+    public Set<Etudiant> listStudentInSGBD () {
 
         ResultSet resultSet = getResult(
                 "SELECT DISTINCT E.ID_ETUDIANT, E.NOM, E.PRENOM " +
@@ -80,7 +83,7 @@ public class SQLExtractor implements Extractor {
             return null;
 
         try {
-            BDD bdd = new BDD();
+            Set<Etudiant> students = new LinkedHashSet<>();
 
             while (resultSet.next()) {
                 Etudiant etudiant = new Etudiant();
@@ -88,9 +91,9 @@ public class SQLExtractor implements Extractor {
                 etudiant.setNom(resultSet.getString("NOM"));
                 etudiant.setPrenom(resultSet.getString("prenom"));
                 System.out.println(etudiant);
-                bdd.getEtudiants().add(etudiant);
+                students.add(etudiant);
             }
-            return bdd;
+            return students;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -99,13 +102,13 @@ public class SQLExtractor implements Extractor {
     }
 
     @Override
-    public BDD listProfessorCourses() {
+    public Set<Cours> listProfessorCourses() {
         return null;
     }
 
     @Override
-    public BDD countStudentInM1() {
+    public int countStudentInM1() {
         //TODO Count student in M1
-        return null;
+        return 0;
     }
 }
