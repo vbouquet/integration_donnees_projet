@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class XMLExtractor implements Extractor {
 
@@ -61,7 +62,6 @@ public class XMLExtractor implements Extractor {
             } catch (NullPointerException e) {
             }
         }
-        System.out.println(sgbdStudents);
         return sgbdStudents;
     }
 
@@ -70,19 +70,17 @@ public class XMLExtractor implements Extractor {
         if (dataset == null) {
             buildDataset();
         }
-        System.out.println(dataset.getCours());
         return dataset.getCours();
     }
 
     @Override
-    public int countStudentInM1() {
+    public Set<Etudiant> countStudentInM1() {
         if (dataset == null) {
             buildDataset();
         }
-        System.out.println((int) dataset.getEtudiants().stream().filter(e -> e.getNiveauInsertion().equals("M1")).count());
-        return (int) dataset.getEtudiants().stream()
+        return dataset.getEtudiants().stream()
                 .filter(e -> e.getNiveauInsertion()
-                        .equals("M1")).count();
+                        .equals("M1")).collect(Collectors.toSet());
     }
 
     private static String getTagValue(String tag, Element element) {

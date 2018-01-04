@@ -62,29 +62,7 @@ public class SQLExtractor implements Extractor {
                         "AND C.LIBELE = 'SGBD'");
         if (resultSet == null)
             return null;
-
-        try {
-            Set<Etudiant> students = new LinkedHashSet<>();
-
-            while (resultSet.next()) {
-                Etudiant etudiant = new Etudiant();
-                etudiant.setId_etudiant(Long.parseLong(resultSet.getString("ID_etudiant")));
-                etudiant.setNom(resultSet.getString("nom"));
-                etudiant.setPrenom(resultSet.getString("prenom"));
-                etudiant.setProvenance(resultSet.getString("provenance"));
-                etudiant.setFormationPrecedente(resultSet.getString("Formation_precedente"));
-                etudiant.setPaysFormationPrecedente(resultSet.getString("Pays_Formation_precedente"));
-                etudiant.setAnneeDebut(resultSet.getString("Annee_debut"));
-                etudiant.setNiveauInsertion(resultSet.getString("Niveau_inscription"));
-                etudiant.setAge(extractAge(resultSet.getString("dateNaissance")));
-                students.add(etudiant);
-            }
-            System.out.println(students);
-            return students;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return initStudent(resultSet);
     }
 
     @Override
@@ -105,7 +83,6 @@ public class SQLExtractor implements Extractor {
                 cours.setType(resultSet.getString("type"));
                 courses.add(cours);
             }
-            System.out.println(courses);
             return courses;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,25 +91,15 @@ public class SQLExtractor implements Extractor {
     }
 
     @Override
-    public int countStudentInM1() {
+    public Set<Etudiant> countStudentInM1() {
 
         ResultSet resultSet = getResult(
-                "SELECT COUNT(*) AS COUNT " +
+                "SELECT * " +
                         "FROM ETUDIANT " +
                         "WHERE Niveau_inscription = 'M1'");
-
         if (resultSet == null)
-            return 0;
-
-        try {
-            if (resultSet.next()) {
-                System.out.println(resultSet.getInt("COUNT"));
-                return resultSet.getInt("COUNT");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+            return null;
+        return initStudent(resultSet);
     }
 
     private int extractAge(String date) {
@@ -160,6 +127,30 @@ public class SQLExtractor implements Extractor {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+        return null;
+    }
+
+    private Set<Etudiant> initStudent(ResultSet resultSet) {
+        try {
+            Set<Etudiant> students = new LinkedHashSet<>();
+
+            while (resultSet.next()) {
+                Etudiant etudiant = new Etudiant();
+                etudiant.setId_etudiant(Long.parseLong(resultSet.getString("ID_etudiant")));
+                etudiant.setNom(resultSet.getString("nom"));
+                etudiant.setPrenom(resultSet.getString("prenom"));
+                etudiant.setProvenance(resultSet.getString("provenance"));
+                etudiant.setFormationPrecedente(resultSet.getString("Formation_precedente"));
+                etudiant.setPaysFormationPrecedente(resultSet.getString("Pays_Formation_precedente"));
+                etudiant.setAnneeDebut(resultSet.getString("Annee_debut"));
+                etudiant.setNiveauInsertion(resultSet.getString("Niveau_inscription"));
+                etudiant.setAge(extractAge(resultSet.getString("dateNaissance")));
+                students.add(etudiant);
+            }
+            return students;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
