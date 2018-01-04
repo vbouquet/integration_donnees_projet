@@ -8,19 +8,27 @@ import fr.parisnanterre.idd.model.Etudiant;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class SQLExtractor implements Extractor {
+
     private Connection connection = null;
     private static final String databaseName = "idd";
     private static final String user = "root";
     private static final String password = "root";
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
 
     @Override
     public boolean getSession() {
-        if (connection != null)
-            return true;
+        try {
+            if (connection != null && !connection.isClosed() )
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -47,8 +55,65 @@ public class SQLExtractor implements Extractor {
         }
     }
 
+    @Override
+    public Set<Etudiant> listStudentInSGBD() {
+
+        ResultSet resultSet = getResult(
+                "SELECT * " +
+                        "FROM ETUDIANT E, INSCRIPTION I, COURS C " +
+                        "WHERE C.NUMCOURS = I.NUMCOURS " +
+                        "AND E.ID_ETUDIANT = I.NUMET " +
+                        "AND C.LIBELE = 'SGBD'");
+        if (resultSet == null)
+            return null;
+        return initStudent(resultSet);
+    }
+
+    @Override
+    public Set<Cours> listProfessorCourses() {
+        ResultSet resultSet = getResult(
+                "SELECT * " +
+                        "FROM COURS");
+        if (resultSet == null)
+            return null;
+        try {
+            Set<Cours> courses = new LinkedHashSet<>();
+
+            while (resultSet.next()) {
+                Cours cours = new Cours();
+                cours.setId_cours(Long.parseLong(resultSet.getString("NumCours")));
+                cours.setLibelle(resultSet.getString("libele"));
+                cours.setNiveau(resultSet.getString("niveau"));
+                cours.setType(resultSet.getString("type"));
+                courses.add(cours);
+            }
+            return courses;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Set<Etudiant> countStudentInM1() {
+
+        ResultSet resultSet = getResult(
+                "SELECT * " +
+                        "FROM ETUDIANT " +
+                        "WHERE Niveau_inscription = 'M1'");
+        if (resultSet == null)
+            return null;
+        return initStudent(resultSet);
+    }
+
+    private int extractAge(String date) {
+        LocalDate birthDate = LocalDate.parse(date, dateTimeFormatter);
+        LocalDate now = LocalDate.now();
+        return now.getYear() - birthDate.getYear();
+    }
+
     private ResultSet getResult(String sql) {
-        if ( !this.getSession())
+        if (!this.getSession())
             return null;
 
         Statement statement = null;
@@ -61,54 +126,32 @@ public class SQLExtractor implements Extractor {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+           closeSession();
         }
         return null;
     }
 
-    @Override
-    public Set<Etudiant> listStudentInSGBD () {
-
-        ResultSet resultSet = getResult(
-                "SELECT DISTINCT E.ID_ETUDIANT, E.NOM, E.PRENOM " +
-                        "FROM ETUDIANT E, INSCRIPTION I, COURS C " +
-                        "WHERE C.NUMCOURS = I.NUMCOURS " +
-                        "AND E.ID_ETUDIANT = I.NUMET " +
-                        "AND C.LIBELE = 'SGBD'");
-        if (resultSet == null)
-            return null;
-
+    private Set<Etudiant> initStudent(ResultSet resultSet) {
         try {
             Set<Etudiant> students = new LinkedHashSet<>();
 
             while (resultSet.next()) {
                 Etudiant etudiant = new Etudiant();
-                etudiant.setId_etudiant(resultSet.getInt("ID_ETUDIANT"));
-                etudiant.setNom(resultSet.getString("NOM"));
+                etudiant.setId_etudiant(Long.parseLong(resultSet.getString("ID_etudiant")));
+                etudiant.setNom(resultSet.getString("nom"));
                 etudiant.setPrenom(resultSet.getString("prenom"));
-                System.out.println(etudiant);
+                etudiant.setProvenance(resultSet.getString("provenance"));
+                etudiant.setFormationPrecedente(resultSet.getString("Formation_precedente"));
+                etudiant.setPaysFormationPrecedente(resultSet.getString("Pays_Formation_precedente"));
+                etudiant.setAnneeDebut(resultSet.getString("Annee_debut"));
+                etudiant.setNiveauInsertion(resultSet.getString("Niveau_inscription"));
+                etudiant.setAge(extractAge(resultSet.getString("dateNaissance")));
                 students.add(etudiant);
             }
             return students;
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
-    }
-
-    @Override
-    public Set<Cours> listProfessorCourses() {
         return null;
-    }
-
-    @Override
-    public int countStudentInM1() {
-        //TODO Count student in M1
-        return 0;
     }
 }
