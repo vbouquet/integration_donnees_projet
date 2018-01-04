@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -60,7 +59,6 @@ public class XMLExtractor implements Extractor {
                     sgbdStudents.add(inscription.getEtudiant());
                 }
             } catch (NullPointerException e) {
-                System.out.println("Libelle introuvable");
             }
         }
         System.out.println(sgbdStudents);
@@ -112,7 +110,7 @@ public class XMLExtractor implements Extractor {
             Etudiant etudiant = new Etudiant(Long.parseLong(getTagValue("NumEt", element)),
                     getTagValue("nom", element),
                     getTagValue("Provenance", element),
-                    getAge(getTagValue("dateNaissance", element)),
+                    extractAge(getTagValue("dateNaissance", element)),
                     getTagValue("FormationPrecedante", element),
                     getTagValue("Pays_formation_precedante", element),
                     getTagValue("AnneeDebut", element),
@@ -154,7 +152,7 @@ public class XMLExtractor implements Extractor {
         closeSession();
     }
 
-    private int getAge(String date) {
+    private int extractAge(String date) {
         LocalDate birthDate = LocalDate.parse(date, dateTimeFormatter);
         LocalDate now = LocalDate.now();
         return now.getYear() - birthDate.getYear();
