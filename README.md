@@ -1,5 +1,8 @@
 # integration_donnees_projet
-Intégration de données projet
+
+Lien du projet : [https://github.com/vbouquet/integration_donnees_projet.git](https://github.com/vbouquet/integration_donnees_projet.git)
+
+Pour lancer le projet il suffit de l'importer dans intellij, de créer la base de données idd et d'importer le .sql disponible dans les sources du projet.
 
 # Requêtes
 
