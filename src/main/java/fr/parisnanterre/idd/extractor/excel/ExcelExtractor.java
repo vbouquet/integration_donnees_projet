@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ExcelExtractor implements Extractor {
 
@@ -54,7 +55,6 @@ public class ExcelExtractor implements Extractor {
                 sgbdStudents.add(inscription.getEtudiant());
             }
         }
-        System.out.println(sgbdStudents);
         return sgbdStudents;
     }
 
@@ -63,26 +63,22 @@ public class ExcelExtractor implements Extractor {
         if (dataset == null) {
             buildDataset();
         }
-        System.out.println(dataset.getCours());
         return dataset.getCours();
     }
 
     @Override
-    public int countStudentInM1() {
+    public Set<Etudiant> countStudentInM1() {
         if (dataset == null) {
             buildDataset();
         }
-        System.out.println((int) dataset.getEtudiants().stream().filter(e -> e.getNiveauInsertion().equals("M1")).count());
-        return (int) dataset.getEtudiants().stream()
+        return dataset.getEtudiants().stream()
                 .filter(e -> e.getNiveauInsertion()
-                        .equals("M1")).count();
+                        .equals("M1")).collect(Collectors.toSet());
     }
 
     private void buildDataset() {
         getSession();
         dataset = new BDD();
-
-        System.out.println("Building dataset...");
 
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             Sheet sheet = workbook.getSheetAt(i);

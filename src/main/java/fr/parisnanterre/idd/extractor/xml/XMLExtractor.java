@@ -13,14 +13,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class XMLExtractor implements Extractor {
 
     private static String SOURCE = "src\\main\\resources\\donnees.xml";
     private Document doc;
     private static BDD dataset = null;
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
 
     @Override
     public boolean getSession() {
@@ -56,10 +60,8 @@ public class XMLExtractor implements Extractor {
                     sgbdStudents.add(inscription.getEtudiant());
                 }
             } catch (NullPointerException e) {
-                System.out.println("Libelle introuvable");
             }
         }
-        System.out.println(sgbdStudents);
         return sgbdStudents;
     }
 
@@ -68,19 +70,17 @@ public class XMLExtractor implements Extractor {
         if (dataset == null) {
             buildDataset();
         }
-        System.out.println(dataset.getCours());
         return dataset.getCours();
     }
 
     @Override
-    public int countStudentInM1() {
+    public Set<Etudiant> countStudentInM1() {
         if (dataset == null) {
             buildDataset();
         }
-        System.out.println((int) dataset.getEtudiants().stream().filter(e -> e.getNiveauInsertion().equals("M1")).count());
-        return (int) dataset.getEtudiants().stream()
+        return dataset.getEtudiants().stream()
                 .filter(e -> e.getNiveauInsertion()
-                        .equals("M1")).count();
+                        .equals("M1")).collect(Collectors.toSet());
     }
 
     private static String getTagValue(String tag, Element element) {
@@ -108,6 +108,7 @@ public class XMLExtractor implements Extractor {
             Etudiant etudiant = new Etudiant(Long.parseLong(getTagValue("NumEt", element)),
                     getTagValue("nom", element),
                     getTagValue("Provenance", element),
+                    extractAge(getTagValue("dateNaissance", element)),
                     getTagValue("FormationPrecedante", element),
                     getTagValue("Pays_formation_precedante", element),
                     getTagValue("AnneeDebut", element),
@@ -147,5 +148,11 @@ public class XMLExtractor implements Extractor {
             dataset.addInscription(inscription);
         }
         closeSession();
+    }
+
+    private int extractAge(String date) {
+        LocalDate birthDate = LocalDate.parse(date, dateTimeFormatter);
+        LocalDate now = LocalDate.now();
+        return now.getYear() - birthDate.getYear();
     }
 }

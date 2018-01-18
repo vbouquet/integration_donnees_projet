@@ -11,5 +11,5 @@ public interface Extractor {
     boolean closeSession();
     Set<Etudiant> listStudentInSGBD();
     Set<Cours> listProfessorCourses();
-    int countStudentInM1();
+    Set<Etudiant> countStudentInM1();
 }

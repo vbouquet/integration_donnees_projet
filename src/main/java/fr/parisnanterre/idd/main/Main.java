@@ -19,8 +19,14 @@ public class Main {
         extractor.listStudentInSGBD();*/
 
         Mediator mediator = new Mediator();
-        mediator.countStudentInM1();
-        mediator.listStudentInSGBD();
+//        System.out.println("**");
+//        mediator.countStudentInM1();
+//        System.out.println("**\n\n");
+//        System.out.println("**");
+//        mediator.listStudentInSGBD();
+//        System.out.println("**\n\n");
+//        System.out.println("**");
         mediator.listProfessorCourses();
+//        System.out.println("**");
     }
 }

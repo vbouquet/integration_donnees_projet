@@ -152,6 +152,12 @@
         </Cours>
         <Cours>
             <Nb_heures>18</Nb_heures>
+            <Niveau>M1</Niveau>
+            <ID_cours>7</ID_cours>
+            <Type>Cours Magistral</Type>
+        </Cours>
+        <Cours>
+            <Nb_heures>18</Nb_heures>
             <Niveau>M2</Niveau>
             <ID_cours>2</ID_cours>
             <Type>Cours Magistral</Type>
